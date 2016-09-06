@@ -1,16 +1,20 @@
 %{
-#include <stdlib.h>
+#include <stdio.h>
 #include "test.y.hh"
 %}
 
 %%
 
-[-+*/\n()] {
+[-+*/\n()^] {
     return *yytext;
 }
 
-[0-9]+ {
-    yylval = strtol(yytext,0,10);
+calc {
+    return CALC;
+}
+
+[0-9]+([.][0-9]*)? {
+    sscanf(yytext,"%lf",&yylval.value);
     return NUM;
 }
 

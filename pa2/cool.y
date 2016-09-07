@@ -144,6 +144,7 @@
     
     /* Precedence declarations go here. */
     
+    %nonassoc IN
     %right ASSIGN
     %nonassoc NOT
     %nonassoc LE '<' '='
@@ -364,68 +365,15 @@
       $$ = bool_const($1);
     }
 
-    /*init
-    : {
-      $$ = no_expr();
-    }
-    | ASSIGN expr {
-      $$ = $2;
-    }*/
-
-    /*let_expr
-    : LET OBJECTID ':' TYPEID init IN expr {
-      @$ = @6;
-      SET_NODELOC(@6);
-      $$ = let($2,$4,$5,$7);
-    }
-    | LET OBJECTID ':' TYPEID init ',' extra_let {
-      @$ = @6;
-      SET_NODELOC(@6);
-      $$ = let($2,$4,$5,$7); 
-    }
-    | LET error ',' extra_let {
-      @$ = @3;
-      SET_NODELOC(@3);
-      $$ = let(idtable.add_string("error_var"),
-               idtable.add_string("Object"),
-               no_expr(),
-               $4);
-    }*/
-
-    /*extra_let
-    : OBJECTID ':' TYPEID init IN expr { 
-      @$ = @5;
-      SET_NODELOC(@5);
-      $$ = let($1,$3,$4,$6);
-    }
-    | OBJECTID ':' TYPEID init ',' extra_let {
-      @$ = @5;
-      SET_NODELOC(@5);
-      $$ = let($1,$3,$4,$6);
-    }
-    | OBJECTID error ',' extra_let {
-      @$ = @3;
-      SET_NODELOC(@3);
-      $$ = let($1,idtable.add_string("Object"),no_expr(),$4);
-    }
-    | error ',' extra_let {
-      @$ = @2;
-      SET_NODELOC(@2);
-      $$ = let(idtable.add_string("error_var"),
-               idtable.add_string("Object"),
-               no_expr(),
-               $3);
-    }*/
-
     let_expr
     : OBJECTID ':' TYPEID IN expr { 
-      @$ = @5;
-      SET_NODELOC(@5);
+      @$ = @4;
+      SET_NODELOC(@4);
       $$ = let($1,$3,no_expr(),$5);
     }
     | OBJECTID ':' TYPEID ASSIGN expr IN expr { 
-      @$ = @5;
-      SET_NODELOC(@5);
+      @$ = @6;
+      SET_NODELOC(@6);
       $$ = let($1,$3,$5,$7);
     }
     | OBJECTID ':' TYPEID ',' let_expr {
